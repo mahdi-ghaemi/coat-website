@@ -1,0 +1,77 @@
+<%- include('partials/header.ejs') %>
+
+
+<div class="container my-5">
+  <h1 class="mb-4">افزودن محصول جدید</h1>
+  <div class="card p-4">
+    <form id="addProductForm">
+      <div class="mb-3">
+        <label class="form-label">نام محصول</label>
+        <input name="name" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">قیمت (تومان)</label>
+        <input name="price" type="number" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">آدرس تصویر (اختیاری)</label>
+        <input name="imageUrl" class="form-control" placeholder="/images/sample1.jpg">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">تعداد در هر بسته</label>
+        <input name="packSize" type="number" class="form-control" value="1" min="1" required>
+      </div>
+      
+
+        <div class="mb-3">
+        <label class="form-label">رنگ‌ها (با کاما جدا کنید)</label>
+        <input name="colors" class="form-control" placeholder="مثلاً: آبی, مشکی, قرمز">
+        <div class="form-text">رنگ‌ها را با کاما جدا کنید؛ مثل: آبی, مشکی, قرمز</div>
+        </div>
+      
+
+      <div class="mb-3">
+        <label class="form-label">توضیحات</label>
+        <textarea name="description" class="form-control"></textarea>
+      </div>
+      <button class="btn btn-primary" type="submit">افزودن</button>
+    </form>
+  </div>
+</div>
+
+<script>
+document.getElementById('addProductForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const form = e.target;
+  const colorsArray = (form.colors.value || '')
+    .split(',')
+    .map(c => c.trim())
+    .filter(Boolean); // -> ["آبی","مشکی","قرمز"]
+
+  const data = {
+    name: form.name.value.trim(),
+    price: Number(form.price.value),
+    imageUrl: form.imageUrl.value.trim() || null,
+    description: form.description.value.trim(),
+    packSize: Number(form.packSize.value) || 1,
+    colors: colorsArray
+  };
+
+  const res = await fetch('/api/products', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
+  if (res.ok) {
+    alert('محصول اضافه شد');
+    window.location.href = '/admin/dashboard';
+  } else {
+    const err = await res.json();
+    alert(err.error || 'خطا در افزودن محصول');
+  }
+});
+</script>
+
+
+<%- include('partials/footer.ejs') %>

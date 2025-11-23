@@ -1,0 +1,55 @@
+<%- include('partials/header') %>
+
+<div class="container my-5" style="max-width: 1000px;">
+  <h2 class="text-center mb-5 fw-bold" style="color:#7c3aed;">سفارش‌های من</h2>
+
+  <% if (orders.length === 0) { %>
+    <div class="alert alert-info text-center">
+      هنوز سفارشی ثبت نکرده‌اید.
+    </div>
+  <% } else { %>
+    <% orders.forEach(order => { %>
+      <div class="card shadow-sm mb-4 border-0" style="border-top:4px solid #c4b5fd;">
+        <div class="card-body dir-rtl">
+          <div class="d-flex justify-content-between flex-wrap align-items-center">
+            <div>
+              <h5 class="fw-bold mb-1 text-purple">شماره سفارش: <%= order.orderCode %></h5>
+              <small class="text-muted">
+                تاریخ: <%= new Date(order.createdAt).toLocaleDateString('fa-IR') %>
+              </small>
+            </div>
+            <div class="text-end">
+              <span class="badge bg-light text-dark border border-purple">
+                وضعیت: <strong><%= order.status %></strong>
+              </span>
+            </div>
+          </div>
+
+          <hr>
+
+          <ul class="list-unstyled">
+            <% order.items.forEach(item => { %>
+              <li class="mb-2">
+                <strong><%= item.name %></strong>  
+                — <small class="text-muted">تعداد بسته: <%= item.totalPacks %></small>  
+                — <small class="text-muted">مبلغ: <%= Number(item.totalPrice || 0).toLocaleString() %> تومان</small>
+              </li>
+            <% }) %>
+          </ul>
+
+          <div class="mt-3 text-end">
+            <strong>جمع کل:</strong> 
+            <span class="text-purple fw-bold"><%= Number(order.total || 0).toLocaleString() %> تومان</span>
+          </div>
+        </div>
+      </div>
+    <% }) %>
+  <% } %>
+</div>
+
+<style>
+  .text-purple { color:#7c3aed; }
+  .border-purple { border-color:#7c3aed !important; }
+</style>
+
+<%- include('partials/footer') %>

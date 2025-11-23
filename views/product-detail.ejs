@@ -1,0 +1,138 @@
+<%- include("partials/header.ejs") %>
+
+<main>
+  <div class="container px-4 my-5 dir-rtl">
+    <div class="row g-5 align-items-center py-5">
+
+      <!-- تصویر محصول -->
+      <div class="col-md-6 text-center">
+        <div class="detail-image-wrapper shadow-lg rounded">
+          <img src="<%= product.imageUrl %>" alt="<%= product.name %>" 
+               class="img-fluid rounded" 
+               style="max-height: 500px; object-fit: cover;">
+        </div>
+      </div>
+
+      <!-- توضیحات محصول -->
+      <div class="col-md-6 detail-product-text" style="text-align: right;">
+        <h2 class="fw-bold mb-3"><%= product.name %></h2>
+        <p class="description-text text-muted fs-5"><%= product.description %></p>
+        <p class="price h4 text-success fw-bold mb-4"><%= product.price %> تومان</p>
+
+        
+
+        <% 
+          // نرمال‌سازی رنگ‌ها:
+          let colorList = [];
+
+          if (Array.isArray(product.colors)) {
+            colorList = product.colors
+              .flatMap(c => String(c).split(/[،,]/))
+              .map(c => c.trim())
+              .filter(c => c.length > 0);
+          } else if (typeof product.colors === 'string') {
+            colorList = product.colors
+              .split(/[،,]/)
+              .map(c => c.trim())
+              .filter(c => c.length > 0);
+          }
+
+          // حذف رنگ‌های تکراری
+          colorList = [...new Set(colorList)];
+
+          // نگاشت رنگ‌های فارسی → HEX
+          const colorMap = {
+            "قرمز": "#ff0000",
+            "آبی": "#007bff",
+            "سبز": "#28a745",
+            "زرد": "#ffc107",
+            "مشکی": "#000000",
+            "سفید": "#ffffff",
+            "خاکستری": "#6c757d",
+            "صورتی": "#e83e8c",
+            "بنفش": "#6f42c1",
+            "قهوه‌ای": "#8B4513",
+            "نارنجی": "#fd7e14",
+            "طلایی": "#FFD700",
+            "نقره‌ای": "#C0C0C0",
+          };
+        %>
+
+        <form action="/cart/add/<%= product._id %>" method="POST" id="addToCartForm" class="mt-4">
+
+          <div class="mb-3">
+            <label class="form-label">
+              تعداد در هر بسته: <strong><%= product.packSize || 1 %></strong>
+            </label>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label d-block mb-2">
+              برای هر رنگ، تعداد بسته‌ها را وارد کنید:
+            </label>
+
+            <% if (colorList.length === 0) { %>
+              <div class="alert alert-warning">برای این محصول رنگی تعریف نشده است.</div>
+            <% } %>
+
+            <% colorList.forEach(function(color, i) {
+                 const colorName = color;
+                 const colorCss = colorMap[colorName] || colorName; // اگر فارسی نبود، خودش را بگذارد
+            %>
+              <div class="d-flex align-items-center justify-content-between bg-white rounded-3 shadow-sm p-3 mb-2">
+                <div class="d-flex align-items-center">
+                  <div class="color-swatch" data-color="<%= colorCss %>" aria-hidden="true"></div>
+                  <strong style="margin-right:10px;"><%= colorName %></strong>
+                </div>
+                <input type="hidden" name="colors[]" value="<%= colorName %>">
+                <input type="number" name="packs[]" value="0" min="0" class="form-control text-center" style="width:110px;" id="packs_<%= i %>">
+              </div>
+            <% }) %>
+
+            <small class="text-muted d-block mt-2">
+              برای انتخاب یک رنگ، تعداد بسته‌ها را از 0 افزایش دهید. حداقل یک بسته در مجموع لازم است.
+            </small>
+          </div>
+
+          <div class="mt-5 text-start">
+            <a href="/products" class="btn btn-details btn-lg">بازگشت</a>
+            <button type="submit" class="btn btn-buy btn-lg px-4">افزودن به سبد خرید</button>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+</main>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.color-swatch').forEach(el => {
+      const c = el.getAttribute('data-color');
+      if (c) {
+        try {
+          el.style.backgroundColor = c;
+        } catch(e) {
+          console.warn('Invalid color value:', c);
+        }
+      }
+    });
+
+    const form = document.getElementById('addToCartForm');
+    if (form) {
+      form.addEventListener('submit', function(e) {
+        const packs = Array.from(form.querySelectorAll('input[name="packs[]"]'))
+          .map(i => parseInt(i.value) || 0);
+        const total = packs.reduce((a, b) => a + b, 0);
+        if (total <= 0) {
+          e.preventDefault();
+          alert('لطفاً حداقل یک بسته را انتخاب کنید.');
+        }
+      });
+    }
+  });
+</script>
+
+<%- include("partials/footer.ejs") %>

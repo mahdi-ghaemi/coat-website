@@ -1,0 +1,137 @@
+<%- include("partials/header.ejs") %>
+
+<main id="home">
+
+
+<section class="hero-section">
+
+<div class="container col-xxl-8 px-4 py-5"> 
+
+    <div class="row align-items-center g-5 py-5 mt-5" >
+
+        <div class="col-lg-6 dir-rtl hero-content" > 
+
+          <div class="hero-text">
+            <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3 ">مانتو داپر</h1> 
+            <p class="lead ">پخش عمده زیباترین مانتو ها از بهترین تولید کنندگان ایران</p> 
+          </div>
+
+          <div class="hero-bottom d-grid gap-2 d-md-flex justify-content-md-start">   
+              <a href="/products" class="btn btn-lg btn-purple px-4 me-md-2">مشاهده محصولات</a>
+              <a href="/contact" class="btn btn-outline-light btn-lg px-4">ارتباط با ما</a>
+          </div> 
+
+        </div> 
+    </div> 
+</div>
+</section>
+
+
+<section class="features py-5 text-center text-dark position-relative">
+  <div class="overlay"></div>
+  <div class="container position-relative">
+    <h2 class="fw-bold mb-5 text-white">چرا مانتو داپر؟</h2>
+
+    <div class="row g-4 justify-content-center">
+      <div class="col-md-4 col-sm-6">
+        <div class="feature-card p-4 rounded-4 bg-white bg-opacity-75 shadow-sm h-100">
+          <div class="icon mb-3 fs-1 text-primary">
+            <i class="bi bi-truck"></i>
+          </div>
+          <h5 class="fw-bold mb-2">ارسال سریع به سراسر ایران</h5>
+          <p class="text-muted mb-0">تحویل فوری و مطمئن برای خریداران عمده با پیگیری لحظه‌ای.</p>
+        </div>
+      </div>
+
+      <div class="col-md-4 col-sm-6">
+        <div class="feature-card p-4 rounded-4 bg-white bg-opacity-75 shadow-sm h-100">
+          <div class="icon mb-3 fs-1 text-primary">
+            <i class="bi bi-cash-stack"></i>
+          </div>
+          <h5 class="fw-bold mb-2">قیمت تولیدی واقعی</h5>
+          <p class="text-muted mb-0">خرید مستقیم از کارگاه‌های معتبر، بدون واسطه، با تضمین قیمت.</p>
+        </div>
+      </div>
+
+      <div class="col-md-4 col-sm-6">
+        <div class="feature-card p-4 rounded-4 bg-white bg-opacity-75 shadow-sm h-100">
+          <div class="icon mb-3 fs-1 text-primary">
+            <i class="bi bi-shop"></i>
+          </div>
+          <h5 class="fw-bold mb-2">صدها مدل مانتو</h5>
+          <p class="text-muted mb-0">تنوع بالا متناسب با فصل و سلیقه‌های مختلف خریداران </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- 🔹 آخرین محصولات -->
+<section class="home-products py-5">
+  <div class="container text-center">
+    <h2 class="mb-4 fw-bold home-title">🛍 آخرین محصولات اضافه‌شده</h2>
+
+    <% if (latestProducts.length > 0) { %>
+      <div id="latestProductsCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+
+          <% latestProducts.forEach((product, index) => { %>
+            <% if (index % 3 === 0) { %>
+              <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
+                <div class="row justify-content-center">
+            <% } %>
+
+            <div class="col-md-4 col-sm-6">
+              <div class="product-card">
+                <img src="<%= product.imageUrl || '/image/products/sample.jpg' %>" class="product-img" alt="<%= product.name %>">
+                <p class="mt-3 fw-semibold"><%= product.name %></p>
+                <p class="text-muted"><%= product.price.toLocaleString() %> تومان</p>
+              </div>
+            </div>
+
+            <% if (index % 3 === 2 || index === latestProducts.length - 1) { %>
+                </div>
+              </div>
+            <% } %>
+          <% }); %>
+
+        </div>
+
+        <!-- کنترل‌های اسلایدر -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#latestProductsCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#latestProductsCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon"></span>
+        </button>
+      </div>
+    <% } else { %>
+      <p class="text-muted mt-4">هنوز محصولی اضافه نشده است.</p>
+    <% } %>
+
+    <a href="/products" class="btn btn-purple mt-5 px-5 py-2 fw-bold shadow-sm">
+      مشاهده همه محصولات
+    </a>
+  </div>
+</section>
+
+<script>
+  const carousel = document.querySelector('#latestProductsCarousel');
+  if (carousel) {
+    const bsCarousel = new bootstrap.Carousel(carousel, {
+      interval: 4000,
+      ride: 'carousel',
+      pause: 'hover'
+    });
+  }
+</script>
+
+
+
+
+
+</main>
+
+<%- include("partials/footer.ejs") %>

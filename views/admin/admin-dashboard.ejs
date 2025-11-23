@@ -1,0 +1,138 @@
+
+
+
+    <!-- 🔹 هدر -->
+  <%- include('../partials/header') %>
+
+
+
+  <style>
+    body {
+      background-color: #faf7ff !important;
+    }
+
+      /* فقط هدر چپ‌چین شود */
+    header, .header, .navbar {
+      direction: ltr !important;
+      text-align: left !important;
+    }
+
+    .dashboard-container {
+      display: flex;
+      flex-wrap: wrap;
+      min-height: 80vh;
+      margin-top: 30px;
+      
+    }
+
+    /* ستون سمت راست */
+    .sidebar {
+      width: 250px;
+      background: linear-gradient(180deg, #f5e6ff, #ede7f6);
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      margin-inline-start: 20px;
+    }
+
+    .sidebar h4 {
+      text-align: center;
+      color: #6a1b9a;
+      font-weight: bold;
+      margin-bottom: 25px;
+    }
+
+    .sidebar button {
+      width: 100%;
+      background: #e1bee7;
+      border: none;
+      padding: 10px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      color: #4a148c;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    .sidebar button.active,
+    .sidebar button:hover {
+      background: #8e24aa;
+      color: white;
+    }
+
+    /* محتوای سمت چپ */
+    .content {
+      flex: 1;
+      background: #fff;
+      border-radius: 20px;
+      padding: 30px;
+      margin: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    /* به طور پیش‌فرض همه بخش‌ها پنهان باشند */
+    .content section {
+      display: none;
+    }
+
+    /* فقط بخشی که active است نمایش داده شود */
+    .content section.active {
+      display: block;
+    }
+
+  </style>
+
+  <div class="container" >
+      <div class="dashboard-container dir-rtl">
+
+        <!-- ستون سمت راست -->
+        <div class="sidebar">
+          <h4>👤 حساب ادمین</h4>
+          <button id="btn-products" class="active">🛍 مدیریت محصولات</button>
+          <button id="btn-users">ℹ️ مدیریت کاربران</button>
+          <form action="/logout" method="post">
+            <button type="submit">🚪 خروج از حساب</button>
+          </form>
+        </div>
+
+
+        <!-- محتوای سمت چپ -->
+        <div class="content">
+          <section id="section-products" class="active">
+            <%- include('partials/admin-products', { products }) %>
+          </section>
+
+          <section id="section-users">
+            <%- include('partials/admin-users', { users }) %>
+          </section>
+        </div>
+
+
+      </div>
+  </div>
+
+
+  <script>
+    const btnProducts = document.getElementById('btn-products');
+    const btnUsers = document.getElementById('btn-users');
+    const sectionProducts = document.getElementById('section-products');
+    const sectionUsers = document.getElementById('section-users');
+
+    btnProducts.onclick = () => {
+      btnProducts.classList.add('active');
+      btnUsers.classList.remove('active');
+      sectionProducts.classList.add('active');
+      sectionUsers.classList.remove('active');
+    };
+
+    btnUsers.onclick = () => {
+      btnUsers.classList.add('active');
+      btnProducts.classList.remove('active');
+      sectionUsers.classList.add('active');
+      sectionProducts.classList.remove('active');
+    };
+  </script>
+
+
+    <!-- 🔹 فوتر -->
+  <%- include('../partials/footer') %>

@@ -1,0 +1,120 @@
+<%- include('../partials/header') %>
+
+<div class="container my-5">
+  <h3 class="mb-4">📦 جزئیات سفارش</h3>
+
+  <div class="card mb-4">
+    <div class="card-body">
+      <h5 class="card-title">👤 اطلاعات خریدار</h5>
+      <p><strong>نام:</strong> <%= order.firstName %> <%= order.lastName %></p>
+      <p><strong>تلفن:</strong> <%= order.userId?.mobile || '-' %></p>
+      <p><strong>آدرس:</strong> <%= order.address || '-' %></p>
+      <p><strong>کدپستی:</strong> <%= order.postalCode || '-' %></p>
+      <p><strong>تاریخ سفارش:</strong> <%= new Date(order.createdAt).toLocaleString('fa-IR') %></p>
+      <p><strong>کد سفارش:</strong> <%= order.orderCode %></p>
+      <p><strong>وضعیت:</strong> <%= order.status %></p>
+    </div>
+  </div>
+
+  <h5 class="mb-3">🛍 اقلام سفارش</h5>
+  <% order.items.forEach((item, i) => { %>
+    <div class="card mb-3 border-0 shadow-sm">
+      <div class="card-body">
+        <div class="d-flex align-items-start">
+          <div style="width:80px; height:80px; margin-left:15px;">
+            <% if (item.imageUrl) { %>
+              <img src="<%= item.imageUrl %>" alt="<%= item.name %>" style="width:100%; height:100%; object-fit:cover; border-radius:8px;">
+            <% } else { %>
+              <div style="width:100%; height:100%; background:#f1f1f1; display:flex; align-items:center; justify-content:center; border-radius:8px;">
+                <small class="text-muted">بدون تصویر</small>
+              </div>
+            <% } %>
+          </div>
+
+          <div class="flex-grow-1">
+            <h6 class="fw-bold mb-2"><%= item.name %></h6>
+            <p class="mb-1 text-muted">قیمت واحد: <%= Number(item.unitPrice || 0).toLocaleString() %> تومان</p>
+            <p class="mb-1 text-muted">تعداد کل: <%= item.totalPacks || 0 %> عدد</p>
+            <p class="mb-1 text-muted">جمع جزء: <%= Number(item.totalPrice || 0).toLocaleString() %> تومان</p>
+
+            <% if (item.selections && item.selections.length > 0) { %>
+              <div class="mt-3">
+                <strong>رنگ‌ها:</strong>
+                <% item.selections.forEach(sel => { %>
+                  <div class="p-2 mt-2 bg-light rounded border">
+                    <span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:<%= sel.colorCode || '#ccc' %>;border:1px solid #999;margin-left:6px;"></span>
+                    <%= sel.color %> —
+                    <small>تعداد واحد: <%= sel.units %></small> —
+                    <small>بسته: <%= sel.packs %></small> —
+                    <small>قیمت جزء: <%= Number(sel.subtotal || 0).toLocaleString() %> تومان</small>
+                  </div>
+                <% }) %>
+              </div>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% }) %>
+
+  <div class="text-end mt-4">
+    <h5>💰 جمع کل: <span class="text-success"><%= Number(order.total).toLocaleString() %> تومان</span></h5>
+  </div>
+
+
+
+
+  <hr class="my-4">
+
+
+
+    <!-- در سرور اضافه شود -->
+      <div class="row mt-3 g-2 ">  
+        <div class="col-12 col-md-4">
+          
+          <div class="row">
+            <form action="/admin/orders/<%= order._id %>/status" method="POST" class="d-flex">
+              
+              <div class="col-6">
+                <select name="status" class="form-select w-100 py-2">
+                    <option value="در انتظار پرداخت" <%= order.status === 'در انتظار پرداخت' ? 'selected' : '' %>>در انتظار پرداخت</option>
+                    <option value="در حال آماده‌سازی" <%= order.status === 'در حال آماده‌سازی' ? 'selected' : '' %>>در حال آماده‌سازی</option>
+                    <option value="ارسال شده" <%= order.status === 'ارسال شده' ? 'selected' : '' %>>ارسال شده</option>
+                    <option value="تحویل داده شده" <%= order.status === 'تحویل داده شده' ? 'selected' : '' %>>تحویل داده شده</option>
+                    <option value="لغو شده" <%= order.status === 'لغو شده' ? 'selected' : '' %>>لغو شده</option>
+                </select>
+              </div>
+
+              <div class="col-6">
+                <button type="submit" class="btn btn-primary w-100 py-2 fw-bold">تغییر وضعیت</button>
+              </div>
+
+            </form>
+          </div>
+
+        </div>
+
+        <div class="col-12 col-md-2">
+          <form action="/admin/orders/<%= order._id %>?_method=DELETE" method="POST" >
+             <button type="submit" class="btn btn-danger w-100 py-2 fw-bold" onclick="return confirm('آیا از حذف این سفارش مطمئن هستید؟')">حذف سفارش</button>
+          </form>
+        </div>
+
+        <div class="col-12 col-md-2">
+          <a href="/admin/orders/<%= order._id %>/invoice" target="_blank" class="btn btn-outline-success w-100 py-2 fw-bold">
+              چاپ فاکتور PDF
+          </a>
+        </div>
+
+
+      </div>
+    <!-- در سرور اضافه شود -->
+
+
+
+    <a href="/admin/users/<%= order.userId?._id %>" class="btn btn-outline-secondary mt-4">بازگشت</a>
+
+
+</div>
+
+<%- include('../partials/footer') %>

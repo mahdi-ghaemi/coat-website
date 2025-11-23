@@ -1,0 +1,59 @@
+<%- include("../../partials/header.ejs") %>
+
+<div class="container my-5">
+  <h2 class="mb-4">مدیریت محصولات</h2>
+
+  <a href="/admin" class="btn btn-success mb-3">➕ افزودن محصول جدید</a>
+
+  <!-- در سرور اضافه شود -->
+  <div class="table-responsive">
+
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>عکس</th>
+        <th>نام</th>
+        <th>قیمت</th>
+        <th>دسته‌بندی</th>
+        <th>عملیات</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% products.forEach(p => { %>
+        <tr>
+          <td style="width:100px">
+            <img src="<%= p.imageUrl %>" alt="<%= p.name %>" class="img-fluid" style="max-height:80px; object-fit:cover;">
+          </td>
+          <td><%= p.name %></td>
+          <td><%= p.price %> تومان</td>
+          <td><%= p.category || '-' %></td>
+
+          <!-- در سرور اضافه شود -->
+          <td class="table-actions">
+            <a href="/admin/products/<%= p._id %>/edit" class="btn btn-primary btn-sm">ویرایش</a>
+            <form action="/admin/products/<%= p._id %>?_method=DELETE" method="POST" style="display:inline;">
+              <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('حذف شود؟')">حذف</button>
+            </form>
+          </td>
+          <!-- در سرور اضافه شود -->
+
+
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+  </div>
+  <!-- در سرور اضافه شود -->
+
+
+
+
+</div>
+
+
+
+
+
+       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
+    </body>
+</html>

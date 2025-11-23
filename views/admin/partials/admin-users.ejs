@@ -1,0 +1,54 @@
+<%- include('../../partials/header') %>
+
+<div class="container mt-4">
+  <h2 class="mb-4 text-center">👥 لیست کاربران سایت</h2>
+
+  <!-- در سرور اضافه شود -->
+  <div class="table-responsive">
+
+  <table class="table table-striped table-bordered text-center align-middle">
+    <thead class="table-dark">
+      <tr>
+        <th>#</th>
+        <th>نام</th>
+        <th>موبایل</th>
+        <th>ایمیل</th>
+        <th>آدرس</th>
+        <th>عملیات</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% users.forEach((u, i) => { %>
+        <tr>
+          <td><%= i + 1 %></td>
+          <td><%= u.firstName %> <%= u.lastName %></td>
+          <td><%= u.mobile %></td>
+          <td><%= u.email || '-' %></td>
+          <td><%= u.address || '-' %></td>
+
+          <!-- در سرور اضافه شود -->
+          <td class="table-actions">
+            <a href="/admin/users/<%= u._id %>" class="btn btn-sm btn-info">سوابق خرید</a>
+            <form action="/admin/users/<%= u._id %>?_method=DELETE" method="POST" style="display:inline;">
+              <button class="btn btn-sm btn-danger" onclick="return confirm('آیا از حذف این کاربر مطمئن هستید؟')">
+                حذف
+              </button>
+            </form>
+          </td>
+           <!-- در سرور اضافه شود -->
+
+
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+  </div>
+  <!-- در سرور اضافه شود -->
+
+
+</div>
+
+
+       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
+    </body>
+</html>

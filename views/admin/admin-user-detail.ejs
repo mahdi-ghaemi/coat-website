@@ -1,0 +1,48 @@
+<%- include('../partials/header') %>
+
+<div class="container mt-4">
+  <h3 class="mb-3">🧾 مشخصات کاربر</h3>
+  <ul class="list-group mb-4">
+    <li class="list-group-item"><b>نام:</b> <%= user.firstName %> <%= user.lastName %></li>
+    <li class="list-group-item"><b>موبایل:</b> <%= user.mobile %></li>
+    <li class="list-group-item"><b>ایمیل:</b> <%= user.email || '-' %></li>
+    <li class="list-group-item"><b>آدرس:</b> <%= user.address || '-' %></li>
+    <li class="list-group-item"><b>کد پستی:</b> <%= user.postalCode || '-' %></li>
+  </ul>
+
+  <h4>🛍 سوابق خرید</h4>
+  <% if (orders.length === 0) { %>
+    <p class="text-muted">هنوز سفارشی ثبت نشده است.</p>
+  <% } else { %>
+        <table class="table table-bordered text-center">
+            <thead>
+                <tr>
+                <th>#</th>
+                <th>تاریخ</th>
+                <th>جمع کل (تومان)</th>
+                <th>وضعیت</th>
+                <th>جزئیات</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% orders.forEach((o, i) => { %>
+                <tr>
+                    <td><%= i + 1 %></td>
+                    <td><%= new Date(o.createdAt).toLocaleString('fa-IR') %></td>
+                    <td><%= o.total.toLocaleString() %></td>
+                    <td><%= o.status || 'نامشخص' %></td>
+                    <td>
+                    <a href="/admin/orders/<%= o._id %>" class="btn btn-sm btn-outline-info">
+                        مشاهده جزئیات
+                    </a>
+                    </td>
+                </tr>
+                <% }) %>
+            </tbody>
+        </table>
+  <% } %>
+
+  <a href="/admin/dashboard" class="btn btn-secondary mt-3">بازگشت</a>
+</div>
+
+<%- include('../partials/footer') %>

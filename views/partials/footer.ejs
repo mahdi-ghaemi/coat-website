@@ -1,0 +1,70 @@
+<footer class="text-white text-center py-4 mt-5" style="background: linear-gradient(135deg, #6d28d9, #b47ee5);">
+  <div class="container">
+    <!-- عنوان -->
+    <h5 class="fw-bold mb-2">مانتو داپر</h5>
+    <p class="small mb-3">پخش عمده مانتو از بهترین تولیدکنندگان ایران</p>
+
+    <!-- شماره تماس -->
+    <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+      <a href="tel:09XXXXXXXXX" class="text-white d-flex align-items-center text-decoration-none">
+        <i class="bi bi-telephone-fill fs-5 me-2"></i>
+        <span class="fw-semibold"><%= adminMobile %></span>
+      </a>
+    </div>
+    <p class="small mb-3 opacity-75">ساعات پاسخگویی: ۸ صبح تا ۸ شب</p>
+
+    <!-- شبکه‌های اجتماعی -->
+    <div class="d-flex justify-content-center align-items-center gap-4 mb-3">
+      <a href="https://t.me/<%= telegramUsername %>" target="_blank" aria-label="تلگرام" title="ارتباط از طریق تلگرام" class="fs-3 ">
+        <!-- <i class="bi bi-telegram" style="color: #229ED9;"></i> -->
+        <img src="/image/telegram-svg-icon.svg" alt="تلگرام" width="35" height="35" class="telegram-icon">
+      </a>
+      <a href="https://wa.me/<%= whatsappNumber %>" target="_blank" aria-label="واتساپ" title="ارتباط از طریق واتساپ" class="fs-3 ">
+        <!-- <i class="bi bi-whatsapp" style="color: #25D366;"></i> -->
+        <img src="/image/whatsapp-svg-icon.svg" alt="واتساپ" width="35" height="35" class="whatsapp-icon">
+      </a>
+        <a href="https://ble.ir/<%= baleUsername %>" target="_blank" aria-label="بله" title="ارتباط از طریق بله">
+          <img src="/image/bale-color.svg" alt="بله" width="28" height="28" class="bale-icon">
+        </a>
+    </div>
+
+    <!-- آدرس -->
+    <!-- <p class="small mb-2 fw-semibold">آدرس:</p> -->
+    <p class="small opacity-75 mb-2">آدرس: تهران، خیابان مثال، کوچه نمونه، پلاک ۱۲</p>
+
+    <!-- کپی‌رایت -->
+    <p class="small mb-0 opacity-75">© 2025 Manto Dapper — تمامی حقوق محفوظ است.</p>
+  </div>
+</footer>
+
+<style>
+.bale-icon,
+.whatsapp-icon,
+.telegram-icon
+ {
+  vertical-align: middle;
+  transition: transform 0.3s ease;
+}
+footer a:hover .bale-icon,
+footer a:hover i,
+footer a:hover .whatsapp-icon,
+footer a:hover .telegram-icon
+ {
+  transform: translateY(-3px);
+}
+footer {
+  line-height: 1.5;
+}
+</style>
+
+
+
+
+
+
+
+   
+
+       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
+    </body>
+</html>

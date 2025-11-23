@@ -1,0 +1,176 @@
+<%- include("partials/header.ejs") %>
+
+<main class="container my-5 ">
+  <h1 class="mb-4 fw-bold text-center">🛒 سبد خرید شما</h1>
+
+  <% if (!cart || cart.length === 0) { %>
+    <div class="alert alert-info text-center shadow-sm rounded-3 py-4">
+      سبد خرید شما خالی است 😢
+    </div>
+  <% } else { %>
+    <div class="row g-4 dir-rtl ">
+      <% cart.forEach((item, idx) => { %>
+        <div class="col-12">
+          <div class="card shadow-sm border-0 rounded-4 p-3">
+            <div class="row align-items-center g-3">
+              <div class="col-md-3 text-center">
+                <img src="<%= item.imageUrl %>" alt="<%= item.name %>"
+                  class="img-fluid rounded-4 border" style="max-height: 160px; object-fit: cover;">
+              </div>
+
+              <div class="col-md-6">
+                <h5 class="fw-bold mb-3"><%= item.name %></h5>
+
+                <% const colorMap = {
+                    "قرمز": "#ff0000", "آبی": "#007bff", "سبز": "#28a745", "زرد": "#ffc107",
+                    "مشکی": "#000000", "سفید": "#ffffff", "صورتی": "#ff69b4", "بنفش": "#6f42c1",
+                    "نارنجی": "#fd7e14", "طوسی": "#6c757d", "قهوه‌ای": "#8b4513", "سرمه‌ای": "#001f3f"
+                };
+                item.selections = item.selections.map(sel => ({
+                    ...sel, colorCode: colorMap[sel.color] || sel.color
+                })); %>
+
+                <% item.selections.forEach((sel, selIndex) => { %>
+                <form
+                  action="/cart/update/<%= idx %>/<%= selIndex %>"
+                  method="POST"
+                  class="update-form d-flex align-items-center flex-wrap mb-2 p-2 rounded bg-light shadow-sm"
+                  data-item-index="<%= idx %>"
+                  data-sel-index="<%= selIndex %>"
+                >
+                  <span
+                    style="display:inline-block; width:18px; height:18px; border-radius:50%;
+                    background-color:<%= sel.colorCode || sel.color || '#ccc' %>;
+                    margin-left:8px; border:1px solid #aaa;"
+                  ></span>
+                  <strong class="me-2"><%= sel.color %></strong>
+                  <input type="number" name="packs" value="<%= sel.packs %>" min="1"
+                    class="form-control form-control-sm text-center packs-input mx-2"
+                    style="width:80px;">
+                  <button type="submit" class="btn btn-sm btn-outline-primary">بروزرسانی</button>
+                </form>
+                <% }) %>
+
+                <div class="mt-2 text-muted small">
+                  هر بسته: <%= item.packSize %> عدد — 
+                  تعداد کل واحدها: <%= item.totalUnits %>
+                </div>
+              </div>
+
+              <div class="col-md-3 text-start">
+                <div class="text-secondary small mb-1">قیمت واحد:</div>
+                <div class="fw-semibold mb-2"><%= item.unitPrice.toLocaleString() %> تومان</div>
+
+                <div class="h5 text-success mb-2">
+                  <strong id="total-price-<%= idx %>">
+                    <%= item.totalPrice.toLocaleString() %>
+                  </strong> تومان
+                </div>
+
+                <form action="/cart/remove/<%= idx %>" method="POST" style="display:inline;">
+                  <button class="btn btn-sm btn-danger" onclick="return confirm('حذف شود؟')">
+                    حذف
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+
+    <!-- جمع کل سبد -->
+     
+        <div class=" mt-5 text-start border-top pt-4">
+
+          <% const grandTotal = cart.reduce((s, it) => s + (it.totalPrice || 0), 0); %>
+          <h4 class="fw-bold">
+            جمع کل:
+            <span id="grand-total" class="text-success"><%= grandTotal.toLocaleString() %></span> تومان
+          </h4>
+
+          <div class="row mt-3 g-2">  
+            <div class="col-12 col-md-3">
+              <a href="/checkout" class="btn btn-purple btn-lg w-100">ادامه و تسویه حساب</a>
+            </div>
+            <div class="col-12 col-md-3">
+              <a href="/products" class="btn btn-outline-purple btn-lg w-100">بازگشت به صفحه محصولات</a>
+            </div>
+          </div>
+
+
+        </div>
+      
+        
+
+
+
+  <% } %>
+</main>
+
+
+<style>
+  .text-purple { color:#7c3aed; }
+  .btn-purple {
+    background-color:#8b5cf6;
+    border:none;
+    color:white;
+    transition: all 0.3s ease;
+  }
+  .btn-purple:hover {
+    background-color:#6d28d9;
+  }
+  .btn-outline-purple {
+    color:#7c3aed;
+    border:1px solid #7c3aed;
+    transition: all 0.3s ease;
+  }
+  .btn-outline-purple:hover {
+    background-color:#7c3aed;
+    color:#fff;
+  }
+</style>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const forms = document.querySelectorAll('.update-form');
+
+  forms.forEach(form => {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const itemIndex = form.dataset.itemIndex;
+      const selIndex = form.dataset.selIndex;
+      const packs = form.querySelector('.packs-input').value;
+
+      try {
+        const res = await fetch(`/cart/update/${itemIndex}/${selIndex}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ packs: Number(packs) })
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+          // 🔹 قیمت آیتم
+          const totalPriceEl = document.querySelector(`#total-price-${itemIndex}`);
+          if (totalPriceEl) totalPriceEl.textContent = data.itemTotalPrice.toLocaleString();
+
+          // 🔹 جمع کل
+          const grandTotalEl = document.querySelector('#grand-total');
+          if (grandTotalEl) grandTotalEl.textContent = data.grandTotal.toLocaleString();
+        } else {
+          alert('خطا در بروزرسانی');
+        }
+      } catch (err) {
+        console.error(err);
+        alert('مشکل در ارتباط با سرور');
+      }
+    });
+  });
+});
+</script>
+
+<%- include("partials/footer.ejs") %>

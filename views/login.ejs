@@ -1,0 +1,47 @@
+<%- include("partials/header") %>
+
+<div class="d-flex align-items-center justify-content-center login-page" style="min-height: 80vh; background-color: #f8f9fa;">
+  <div class="card shadow p-4" style="width: 100%; max-width: 420px; border-radius: 1rem;">
+    <h3 class="text-center mb-4 fw-bold text-primary">ورود به حساب کاربری</h3>
+
+    <form method="POST" action="/login">
+      
+      <input type="hidden" name="next" value="<%= next || '/' %>">
+      
+      <div class="mb-3">
+        <label class="form-label fw-semibold">شماره موبایل</label>
+        <input 
+          type="text" 
+          name="mobile" 
+          class="form-control form-control-lg text-center" 
+          placeholder="مثلاً 09123456789"
+          required
+        >
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label fw-semibold ">رمز عبور</label>
+        <input 
+          type="password" 
+          name="password" 
+          class="form-control form-control-lg text-center" 
+          placeholder="رمز عبور خود را وارد کنید"
+          required
+        >
+      </div>
+
+      <div class="d-grid">
+        <!-- <button class="btn btn-primary btn-lg fw-bold" style="background-color: blueviolet;">ورود</button> -->
+         <button class="btn btn-log btn-lg fw-bold" >ورود</button>
+      </div>
+
+      <div class="text-center mt-3">
+        <small class="text-muted">حساب ندارید؟</small>
+        <a href="/signup" class="fw-semibold text-decoration-none">ثبت‌نام کنید</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<%- include("partials/footer") %>
+

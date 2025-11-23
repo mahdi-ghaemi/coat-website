@@ -1,0 +1,49 @@
+<%- include("partials/header.ejs") %>
+
+<div class="container my-5">
+  <h2 class="mb-4">ویرایش محصول</h2>
+
+  <form action="/admin/products/<%= product._id %>?_method=PUT" method="POST">
+    <div class="mb-3">
+      <label class="form-label">نام محصول</label>
+      <input type="text" name="name" class="form-control" value="<%= product.name %>" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">قیمت</label>
+      <input type="number" name="price" class="form-control" value="<%= product.price %>" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">توضیحات</label>
+      <textarea name="description" class="form-control"><%= product.description %></textarea>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">آدرس عکس</label>
+      <input type="text" name="imageUrl" class="form-control" value="<%= product.imageUrl %>">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">دسته‌بندی</label>
+      <input type="text" name="category" class="form-control" value="<%= product.category %>">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">تعداد در هر بسته</label>
+      <input type="number" name="packSize" class="form-control" value="<%= product.packSize ?? 1 %>" min="1" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">رنگ‌ها (با کاما جدا کنید)</label>
+      <input type="text" name="colors" class="form-control" value="<%= (product.colors || []).join(', ') %>">
+      <div class="form-text">مثال: مشکی, قرمز, آبی</div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">موجودی</label>
+      <input type="number" name="stock" class="form-control" value="<%= product.stock %>">
+    </div>
+
+    <button type="submit" class="btn btn-primary">ذخیره تغییرات</button>
+    <a href="/admin/dashboard" class="btn btn-secondary">انصراف</a>
+  </form>
+</div>
+
+<%- include("partials/footer.ejs") %>

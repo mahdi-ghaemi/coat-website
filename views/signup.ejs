@@ -1,0 +1,75 @@
+
+<%- include("partials/header") %>
+
+<div class="d-flex align-items-center justify-content-center signup-page" style="min-height: 90vh; background-color: #f8f9fa;">
+  <div class="card shadow p-4" style="width: 100%; max-width: 500px; border-radius: 1rem;">
+    <h3 class="text-center mb-4 fw-bold text-primary">ثبت‌نام در فروشگاه</h3>
+
+    <form method="POST" action="/signup">
+
+      <div class="row">
+
+        <div class="col-md-6 mb-3">
+          <label class="form-label fw-semibold">نام خانوادگی</label>
+          <input 
+            type="text" 
+            name="lastName" 
+            class="form-control form-control-lg text-center" 
+            placeholder="نام خانوادگی"
+            required>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label class="form-label fw-semibold">نام</label>
+          <input 
+            type="text" 
+            name="firstName" 
+            class="form-control form-control-lg text-center" 
+            placeholder="نام شما"
+            required>
+        </div>
+
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label fw-semibold">شماره موبایل</label>
+        <input 
+          type="text" 
+          name="mobile" 
+          class="form-control form-control-lg text-center" 
+          placeholder="مثلاً 09123456789"
+          required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label fw-semibold">ایمیل (اختیاری)</label>
+        <input 
+          type="email" 
+          name="email" 
+          class="form-control form-control-lg text-center" 
+          placeholder="ایمیل شما (اختیاری)">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label fw-semibold">رمز عبور</label>
+        <input 
+          type="password" 
+          name="password" 
+          class="form-control form-control-lg text-center" 
+          placeholder="حداقل ۶ کاراکتر"
+          required>
+      </div>
+
+      <div class="d-grid">
+        <button class="btn btn-log btn-lg fw-bold" >ثبت‌نام</button>
+      </div>
+
+      <div class="text-center mt-3">
+        <small class="text-muted">قبلاً حساب دارید؟</small>
+        <a href="/login" class="fw-semibold text-decoration-none">وارد شوید</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<%- include("partials/footer") %>

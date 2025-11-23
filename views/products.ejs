@@ -1,0 +1,50 @@
+<%- include("partials/header.ejs") %>
+
+<main>
+
+
+<div class="container my-5">
+
+<!-- هدر صفحه محصولات -->
+<div class="products-header mb-5">
+  <div class="overlay text-center">
+    <h1 class="display-4 fw-bold header-animate">محصولات</h1>
+    <p class="lead header-animate" style="animation-delay: 0.3s;">جدیدترین و شیک‌ترین مانتوها را اینجا ببینید</p>
+    <!-- <a href="#product-section" class="btn btn-light btn-lg mt-3 header-animate" style="animation-delay: 0.6s;">مشاهده محصولات</a> -->
+  </div>
+</div>
+
+
+  <% if (!products || products.length === 0) { %>
+    <div class="alert alert-info">هنوز محصولی وجود ندارد.</div>
+  <% } else { %>
+
+        <div class="row g-4">
+        <% products.forEach(product => { %>
+        <div class="col-12 col-sm-6 col-md-4 "> <!-- برای رسپانسیو شدن در موبایل و تبلت و دسکتاپ  -->
+            <div class="card shadow-sm border-0 h-100 product-card">
+                <img src="<%= product.imageUrl %>" class="card-img-top" alt="<%= product.name %>" style="height:420px; object-fit:cover;">
+                <div class="card-body text-center">
+
+
+                <h5 class="card-title"><%= product.name %></h5>
+
+                <p class="card-text"><%= product.description %></p>
+
+                <p class="price"><%= product.price %> تومان</p>
+
+                <!-- <a href="/products/<%= product._id %>" class="btn btn-details btn-sm">جزئیات</a> -->
+                <a href="/products/<%= product._id %>" class="btn btn-buy btn-sm">خرید</a>
+
+                </div>
+            </div>
+            </div>
+        <% }) %>
+        </div>
+
+  <% } %>
+</div>
+
+</main>
+
+<%- include("partials/footer.ejs") %>
