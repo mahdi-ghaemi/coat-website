@@ -39,12 +39,11 @@ const logoPath = path.join(__dirname, 'public', 'image', 'logo2.png');
 dotenv.config();
 
 
-
-const MONGODB_URI = process.env.MONGODB_URI;
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/dapper-coat";
 
 
 const app = express();
-const port = process.env.PORT;
+const port = process.env.PORT || 3000;
 
 app.locals.adminMobile = process.env.ADMIN_MOBILE;
 app.locals.telegramUsername = process.env.TELEGRAM_USERNAME;
